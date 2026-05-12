@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#FF9A3C">
+<title>超能力积分 - 儿童成长激励</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="app-title">⭐ 超能力积分</span>
+    <span class="header-date" id="headerDate"></span>
+  </div>
+  <div class="child-name" id="childNameDisplay">🌟 小勇士的成长日记</div>
+</div>
+
+<div class="pool-section">
+  <div class="pool-card">
+    <div class="pool-header">
+      <span class="pool-label">🏆 积分总池</span>
+      <div class="pool-actions">
+        <button class="pool-btn" onclick="openDeductModal()">- 使用积分</button>
+      </div>
+    </div>
+    <div class="score-display">
+      <span class="score-num" id="totalScore">0</span>
+      <span class="score-unit">分</span>
+    </div>
+    <div class="pool-drop-zone" id="dropZone">
+      <span class="drop-icon">🎯</span>
+      <span>把卡片拖到这里加分！</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">
+  <span class="section-label">✨ 我的成就卡片</span>
+  <button class="add-btn" onclick="openAddModal()">＋ 新建卡片</button>
+</div>
+
+<div class="cards-grid" id="cardsGrid"></div>
+
+<div class="history-section">
+  <div class="history-title">📋 积分记录</div>
+  <div id="historyList"></div>
+</div>
+
+<!-- Add Card Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✨ 创建新卡片</div>
+    <div class="modal-label">选择表情</div>
+    <div class="emoji-grid" id="emojiGrid"></div>
+    <div class="modal-label">卡片名称</div>
+    <input class="modal-input" id="cardName" placeholder="例如：晨跑30分钟" maxlength="10">
+    <div class="modal-label">分值</div>
+    <div class="points-input-wrap">
+      <div class="points-stepper" onclick="adjustPoints(-1)">−</div>
+      <input class="modal-input" id="cardPoints" type="number" value="10" min="1" max="999" style="text-align:center;font-size:20px;font-weight:800;color:#FF7043">
+      <div class="points-stepper" onclick="adjustPoints(1)">＋</div>
+    </div>
+    <div class="modal-label">卡片颜色</div>
+    <div class="theme-grid" id="themeGrid"></div>
+    <button class="modal-confirm" onclick="confirmAddCard()">创建卡片 🎉</button>
+    <button class="modal-cancel" onclick="closeModal('addModal')">取消</button>
+  </div>
+</div>
+
+<!-- Deduct Modal -->
+<div class="modal-overlay" id="deductModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🎁 使用积分兑换</div>
+    <div class="modal-label">扣除分值</div>
+    <div class="points-input-wrap">
+      <div class="points-stepper" onclick="adjustDeduct(-1)">−</div>
+      <input class="modal-input" id="deductPoints" type="number" value="10" min="1" style="text-align:center;font-size:20px;font-weight:800;color:#F44336">
+      <div class="points-stepper" onclick="adjustDeduct(1)">＋</div>
+    </div>
+    <div class="modal-label">兑换备注 <span style="color:#ccc;font-weight:400">（记录兑换了什么）</span></div>
+    <input class="modal-input" id="deductReason" placeholder="例如：兑换了一个冰淇淋 🍦" maxlength="20">
+    <button class="modal-confirm" style="background:linear-gradient(135deg,#FF6B6B,#FF4757)" onclick="confirmDeduct()">确认兑换 🎁</button>
+    <button class="modal-cancel" onclick="closeModal('deductModal')">取消</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
