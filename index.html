@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#FF9A3C">
-<title>超能力积分 - 儿童成长激励</title>
+<title>超能力积分</title>
 <link rel="manifest" href="manifest.json">
-<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,16 +18,14 @@
     <span class="app-title">⭐ 超能力积分</span>
     <span class="header-date" id="headerDate"></span>
   </div>
-  <div class="child-name" id="childNameDisplay">🌟 小勇士的成长日记</div>
+  <div class="child-name">🌟 小勇士的成长日记</div>
 </div>
 
 <div class="pool-section">
   <div class="pool-card">
     <div class="pool-header">
       <span class="pool-label">🏆 积分总池</span>
-      <div class="pool-actions">
-        <button class="pool-btn" onclick="openDeductModal()">- 使用积分</button>
-      </div>
+      <button class="pool-btn" onclick="openDeductModal()">− 使用积分</button>
     </div>
     <div class="score-display">
       <span class="score-num" id="totalScore">0</span>
@@ -43,17 +40,28 @@
 
 <div class="section-title">
   <span class="section-label">✨ 我的成就卡片</span>
-  <button class="add-btn" onclick="openAddModal()">＋ 新建卡片</button>
+  <button class="add-btn" onclick="openAddModal()">＋ 新建</button>
 </div>
 
-<div class="cards-grid" id="cardsGrid"></div>
+<!-- 卡片横向滚动区 -->
+<div class="cards-scroll-wrap" id="cardsScrollWrap">
+  <div class="cards-row" id="cardsGrid"></div>
+</div>
+<!-- 超过4张时显示滑动提示 -->
+<div class="cards-hint" id="cardsHint" style="display:none">← 左滑查看更多卡片 →</div>
 
 <div class="history-section">
-  <div class="history-title">📋 积分记录</div>
-  <div id="historyList"></div>
+  <div class="history-title">
+    📋 积分记录
+    <span class="history-count" id="historyCount"></span>
+  </div>
+  <!-- 固定5条高度，内部上划滚动 -->
+  <div class="history-scroll" id="historyList"></div>
+  <!-- 渐隐提示层 -->
+  <div class="history-fade" id="historyFade"><span>↑ 上滑查看更多记录</span></div>
 </div>
 
-<!-- Add Card Modal -->
+<!-- 新建卡片弹窗 -->
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -75,7 +83,18 @@
   </div>
 </div>
 
-<!-- Deduct Modal -->
+<!-- 删除确认弹窗 -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal" style="padding-bottom:28px">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="margin-bottom:8px">🗑️ 删除卡片</div>
+    <div style="text-align:center;color:#999;font-size:14px;margin-bottom:24px">确定要删除这张卡片吗？</div>
+    <button class="modal-confirm" style="background:linear-gradient(135deg,#FF6B6B,#FF4757);margin-top:0" onclick="confirmDelete()">确认删除</button>
+    <button class="modal-cancel" onclick="closeModal('deleteModal')">取消</button>
+  </div>
+</div>
+
+<!-- 使用积分弹窗 -->
 <div class="modal-overlay" id="deductModal">
   <div class="modal">
     <div class="modal-handle"></div>
