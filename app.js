@@ -93,9 +93,12 @@ function renderCards() {
     grid.appendChild(div);
   });
 
-  // 超过4张显示滑动提示
-  const hint = document.getElementById('cardsHint');
-  if (hint) hint.style.display = cards.length > 4 ? 'block' : 'none';
+  // 超过4张显示滑动轨道
+  const bar = document.getElementById('cardsScrollBar');
+  if (bar) {
+    bar.style.display = cards.length > 4 ? 'block' : 'none';
+    if (cards.length > 4) initScrollTrack();
+  }
 }
 
 // 点击卡片以外区域，取消长按editing状态
@@ -104,6 +107,72 @@ document.addEventListener('touchstart', e => {
     document.querySelectorAll('.reward-card.editing').forEach(el => el.classList.remove('editing'));
   }
 }, { passive: true });
+
+// ===== 滑动轨道联动卡片区域 =====
+function initScrollTrack() {
+  const track = document.getElementById('scrollTrack');
+  const thumb = document.getElementById('scrollThumb');
+  const wrap  = document.getElementById('cardsScrollWrap');
+  if (!track || !thumb || !wrap) return;
+
+  // 更新thumb位置和宽度（根据滚动比例）
+  function updateThumb() {
+    const scrollRatio = wrap.scrollLeft / (wrap.scrollWidth - wrap.clientWidth || 1);
+    const trackW = track.clientWidth - 8; // 8 = 两侧各4px padding
+    const thumbW = Math.max(48, trackW * (wrap.clientWidth / wrap.scrollWidth));
+    const thumbX = 4 + scrollRatio * (trackW - thumbW);
+    thumb.style.width = thumbW + 'px';
+    thumb.style.left  = thumbX + 'px';
+  }
+
+  // 卡片区滚动时同步thumb
+  wrap.addEventListener('scroll', updateThumb, { passive: true });
+  updateThumb();
+
+  // thumb拖拽 → 同步卡片区滚动
+  function onThumbDrag(startX, startScrollLeft) {
+    const trackW = track.clientWidth - 8;
+    const thumbW = thumb.clientWidth;
+    const maxThumbX = trackW - thumbW;
+    const maxScroll = wrap.scrollWidth - wrap.clientWidth;
+
+    function onMove(e) {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const dx = clientX - startX;
+      const ratio = dx / maxThumbX;
+      wrap.scrollLeft = Math.max(0, Math.min(maxScroll, startScrollLeft + ratio * maxScroll));
+      updateThumb();
+    }
+    function onEnd() {
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend',  onEnd);
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup',   onEnd);
+    }
+    document.addEventListener('touchmove', onMove, { passive: true });
+    document.addEventListener('touchend',  onEnd);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup',   onEnd);
+  }
+
+  thumb.addEventListener('touchstart', e => {
+    e.stopPropagation();
+    onThumbDrag(e.touches[0].clientX, wrap.scrollLeft);
+  }, { passive: true });
+  thumb.addEventListener('mousedown', e => {
+    e.stopPropagation();
+    onThumbDrag(e.clientX, wrap.scrollLeft);
+  });
+
+  // 点击轨道空白处 → 跳转到对应位置
+  track.addEventListener('click', e => {
+    if (e.target === thumb) return;
+    const rect = track.getBoundingClientRect();
+    const clickRatio = (e.clientX - rect.left) / rect.width;
+    wrap.scrollLeft = clickRatio * (wrap.scrollWidth - wrap.clientWidth);
+    updateThumb();
+  });
+}
 
 // ===== 修复3：历史记录显示数量 + 渐隐提示 =====
 function renderHistory() {

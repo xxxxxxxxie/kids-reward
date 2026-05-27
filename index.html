@@ -47,8 +47,16 @@
 <div class="cards-scroll-wrap" id="cardsScrollWrap">
   <div class="cards-row" id="cardsGrid"></div>
 </div>
-<!-- 超过4张时显示滑动提示 -->
-<div class="cards-hint" id="cardsHint" style="display:none">← 左滑查看更多卡片 →</div>
+<!-- 超过4张时：滑动提示 + 专用滑动轨道 -->
+<div id="cardsScrollBar" style="display:none">
+  <div class="cards-hint">← 左右滑动查看更多卡片 →</div>
+  <div class="scroll-track-wrap">
+    <div class="scroll-track" id="scrollTrack">
+      <div class="scroll-thumb" id="scrollThumb"></div>
+    </div>
+    <div class="scroll-track-label">拖动这里滑动卡片</div>
+  </div>
+</div>
 
 <div class="history-section">
   <div class="history-title">
