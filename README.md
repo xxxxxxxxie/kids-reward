@@ -1,7 +1,7 @@
 # 🌟 超能力积分 - 儿童成长激励App
 
 一个专为家长设计的儿童行为激励应用，通过正向积分机制帮助孩子养成良好习惯。
-<img width="1080" height="2221" alt="kisrew" src="https://github.com/user-attachments/assets/f0b0c886-ba17-4a68-913b-d7789765a6cf" />
+<img width="108" height="222.1" alt="kisrew" src="https://github.com/user-attachments/assets/f0b0c886-ba17-4a68-913b-d7789765a6cf" />
 
 
 ## ✨ 核心特性
