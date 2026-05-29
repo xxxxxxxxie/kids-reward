@@ -2,6 +2,9 @@
 
 一个专为家长设计的儿童行为激励应用，通过正向积分机制帮助孩子养成良好习惯。
 
+<img width="360" height="740" alt="kisrew" src="https://github.com/user-attachments/assets/3842fd92-78b2-4b26-b29f-275b26808827" />
+
+
 ## ✨ 核心特性
 
 ### 🎯 功能亮点
